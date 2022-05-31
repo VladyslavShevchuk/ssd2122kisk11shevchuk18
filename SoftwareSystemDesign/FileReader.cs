@@ -12,6 +12,7 @@ namespace SoftwareSystemDesignApp
         /// Choose implementation of file read method by it extension
         /// </summary>
         /// <param name="filePath">Path to file which shoul be readed</param>
+        /// <returns>Data from sequence file</returns>
         static public string ReadDataFromFile(string filePath)
         {
             string extension = Path.GetExtension(filePath);

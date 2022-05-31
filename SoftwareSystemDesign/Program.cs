@@ -10,23 +10,35 @@ namespace SoftwareSystemDesignApp
     class Program
     {
         private const string VERSION_NUMBER = "1";
-        private static readonly List<string> options = new List<string>() {"-sf", "-s", "-n", "-h", "-v", "-lv"};
+        private static readonly Dictionary<string, string> OPTIONS = new Dictionary<string, string>()
+        {
+            {"-sf", "set sequence from file"},
+            {"-s", "set sequence from console"},
+            {"-n", "number of elements that will be generated"},
+            {"-h", "open user manual"},
+            {"-v", "get software version"},
+            {"-lv", "exit from program"}
+        };
+        private static bool isSequenseWasRecieved;
+        private static bool isNumberWasRecieved;
 
         static void Main(string[] args)
         {
             while (true)
             {
+                // Display command options
                 Console.WriteLine("Please enter one of following command, enter '-h' for help:");
-                foreach(var option in options)
+                foreach(var option in OPTIONS)
                 {
-                    Console.WriteLine(option);
+                    Console.WriteLine($"{option.Key, 3}, {option.Value}");
                 }
                 string userOption = Console.ReadLine();
-
+                Console.Clear();
+                              
+                // Menu implementation
                 switch (userOption)
                 {                  
-                    case "-sf":
-                        Console.Clear();
+                    case "-sf":                    
                         Console.WriteLine("Enter location to file with SF, or enter again '-sf' to exit from this menu:");
                         while (true)
                         {
@@ -37,23 +49,24 @@ namespace SoftwareSystemDesignApp
                                 break;
                             }
                             // C:\torrent\TestData\TestFile.ini
-                            Calculation.GetSequnceByFile(FileReader.ReadDataFromFile(filePath));
-                            if(Calculation.Sequence != null)
-                            {
+                            string dataFromFile = FileReader.ReadDataFromFile(filePath);
+                            if(dataFromFile != null)
+                            {   
+                                Calculation.GetSequnceByFile(dataFromFile);
                                 Console.WriteLine(Calculation.Sequence); // Visualize sequence to user
+                                isSequenseWasRecieved = true;
                                 break;
                             }                       
                         }                  
                         break;
 
                     case "-s":   
-                        Console.Clear();
                         Console.WriteLine("Enter sequence:");   
                         Calculation.GetSequnceByManualTyping(Console.ReadLine());
+                        isSequenseWasRecieved = true;
                         break;
 
                     case "-n":
-                        Console.Clear();
                         Console.WriteLine("Enter number of sequnce elements");
                         
                         bool isresultOfParsingCorrect, isNumberPositive;
@@ -74,27 +87,41 @@ namespace SoftwareSystemDesignApp
                             }                          
                         }
                         Calculation.GetNumberOfSequnceElements(numberOfSequnce);
+                        isNumberWasRecieved = true;
                         break;
 
                     case "-h":
-                        Console.Clear();
-                        Console.WriteLine(Calculation.CallUserHelpInfo());
+                        Calculation.CallUserHelpInfo();
                         break;
 
                     case "-v":
-                        Console.Clear();
                         Console.WriteLine(Calculation.CallVersionNumber());
                         break;
 
                     case "-lv":
-                        Console.Clear();
                         Calculation.ExitFromProgram();
                         break;
 
                     default:
-                        Console.Clear();
                         break;
-                }                                 
+                }
+
+                // Display info that .csv file was created
+                if (isSequenseWasRecieved && isNumberWasRecieved)
+                {
+                    if (Calculation.IsSequnceCorrect(Calculation.Sequence))
+                    {
+                        Calculation.CalculateSequnceElements(Calculation.Sequence, Calculation.NumberOfSequnce);
+                        Calculation.PrintAnswers();
+                        FileWriter.WriteDataToCSVFile(Calculation.Answer);
+                        isNumberWasRecieved = false;
+                        isSequenseWasRecieved = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Entered sequence contains validation error. Please enter new sequnce.");
+                    }                  
+                }
             }
         }
     }
