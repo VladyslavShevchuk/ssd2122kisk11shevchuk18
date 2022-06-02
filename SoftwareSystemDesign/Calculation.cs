@@ -1,43 +1,56 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SoftwareSystemDesignApp
 {
+    // Class-contoller
+    // Perform all calculations with taken data
     public static class Calculation
     {    
-        private static readonly string VERSION_NUMBER = "1";
-        public static string Sequence { get;  private set; } // Data with sequence at string format
-        public static int NumberOfSequnce { get; private set; } // Number of sequnce element which will be calculated
-        public static List<double> Answer = new List<double>();
+        private static readonly string VERSION_NUMBER = "1.0.1."; // Current program version
+        private static string Sequence; // Data with sequence at string format
+        private static int NumberOfSequence; // Number of sequnce element which will be calculated
+        private static List<double> SequenceResult = new List<double>(); // Results of calculations which will be stored at .csv file
+
+        /// <summary>
+        /// Print entered sequence to console for user
+        /// </summary>
+        public static string GetSequence() => Sequence;
+
+        /// <summary>
+        /// Print entered number of sequence to console for user
+        /// </summary>
+        public static int GetNumberOfSequence() => NumberOfSequence;
 
         /// <summary>
         /// Reads sequence from file as a string and sets to 'Sequnce' property
         /// </summary>
         /// <param name="sequence">Readed sequnce from file</param>
-        public static void GetSequnceByFile(string sequnceByFile)
+        public static void SetSequnceByFile(string sequnceByFile)
         {
-            Calculation.Sequence = sequnceByFile;
+            Sequence = sequnceByFile;
         }
 
         /// <summary>
-        /// Reads sequence from console and sets to 'Sequnce' property
+        /// Sets sequence
         /// </summary>
-        /// <param name="sequence">Readed sequnce from console</param>
-        public static void GetSequnceByManualTyping(string sequenceByConsole)
+        /// <param name="sequence">Sequence value</param>
+        public static void SetSequnce(string sequence)
         {        
-            Calculation.Sequence = sequenceByConsole;
-        }  
-        
+            Sequence = sequence;
+        }
+
         /// <summary>
-        /// Reads number of sequence from console and sets to 'NumberOfSequnce' property
+        /// Sets number of sequnce
         /// </summary>
-        /// <param name="sequence">Readed sequnce</param>
-        public static void GetNumberOfSequnceElements(int numberOfSequnce)
+        /// <param name="sequence">Number of sequnce</param>
+        public static void SetNumberOfSequnceElements(int numberOfSequnce)
         {
-            Calculation.NumberOfSequnce = numberOfSequnce;
+            NumberOfSequence = numberOfSequnce;
         }
 
         /// <summary>
@@ -69,37 +82,36 @@ namespace SoftwareSystemDesignApp
         /// <summary>
         /// Calculate numbers of sequnce
         /// </summary>
-        public static void CalculateSequnceElements(string sequnce, int number)
+        public static void CalculateSequnceElements()
         {          
             try
             {
-                int[] availableIterations = new int[number];
+                int[] availableIterations = new int[NumberOfSequence];
                 for(int i = 0; i < availableIterations.Length; i++)
                 {
                     availableIterations[i] = i+1;
                 }
 
                 availableIterations.Aggregate(0.0, (acc, value) => {
-                    string formattedSequence = sequnce.Replace("n", value.ToString());
+                    string formattedSequence = Sequence.Replace("n", value.ToString());
                     double ans = acc+= Parse(formattedSequence);
-                    Answer.Add(ans);
+                    SequenceResult.Add(ans);
                     return ans;
                 });
+                NumberOfSequence = 0;
+                Sequence = null;
             }
             catch
             {
-                Console.WriteLine("Error of calculation.");
+                Console.WriteLine("Error of calculation. Data cleared.");
             }
         }
 
-        public static void PrintAnswers()
-        {
-            foreach (var number in Answer)
-            {
-                Console.Write($"{number}, ");
-            }
-        }
-
+        /// <summary>
+        /// Parse and calculate expression 
+        /// </summary>
+        /// <param name="expression">Expression which be calculated</param>
+        /// <returns>Result of string parsing and calculation</returns>
         private static double Parse(string expression)
         {
             System.Data.DataTable table = new System.Data.DataTable();
@@ -109,21 +121,70 @@ namespace SoftwareSystemDesignApp
             return double.Parse((string)row["expression"]);
         }
 
-        public static bool IsSequnceCorrect(string sequnce)
+        /// <summary>
+        /// Check if entered sequnce correct
+        /// </summary>
+        /// <returns>True if sequnce pattern correct, false otherwise</returns>
+        public static bool IsSequnceCorrect(string sequence)
         {
             string sequncePattern = @"\+|-|\*|/|\)|\(|[0-9]|n";
             Regex regex = new Regex(sequncePattern);          
             try
             {
-                var matchedExpressionChars = Regex.Matches(sequnce, sequncePattern)
+                var matchedExpressionChars = Regex.Matches(sequence, sequncePattern)
                     .Cast<Match>().Select(m => m.Value).ToArray();
-                bool isExpressionValid = string.Join("", matchedExpressionChars).Length == string.Join("", sequnce.Split(' ')).Length;
+                bool isExpressionValid = string.Join("", matchedExpressionChars).Length == string.Join("", sequence.Split(' ')).Length;
                 return isExpressionValid;
             }
             catch
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Check if entered number if correct
+        /// </summary>
+        /// <param name="readedNumber">Number entered by console</param>
+        /// <returns>True if number is correct, false otherwise</returns>
+        public static bool IsNumberCorrect(string readedNumber)
+        {
+            int.TryParse(readedNumber, out int number); // Verify that number is integer
+            return number > 0 ? true : false; // Verify that number at least '1'
+        }
+
+        /// <summary>
+        /// Sending data to file writer and crearing current sequnce results
+        /// </summary>
+        public static void SendSequnceResultToWriter()
+        {
+            try
+            {
+                FileWriter.WriteDataToCSVFile(SequenceResult);
+            }
+            catch
+            {
+                Console.WriteLine("Error of writing data to file. Results were cleared.");
+            }
+            finally
+            {
+                // Clear data in any case
+                SequenceResult.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Print sequence results to console for user
+        /// </summary>
+        public static string GetSequnceResults()
+        {
+            StringBuilder sequenceResultForPrint = new StringBuilder();
+            foreach (var number in SequenceResult)
+            {
+                sequenceResultForPrint.Append($"{number}; ");
+            }
+            sequenceResultForPrint = sequenceResultForPrint.Remove(sequenceResultForPrint.Length-2, 2); // Remove last dot-coma symbol
+            return sequenceResultForPrint.ToString();
         }
     }
 }

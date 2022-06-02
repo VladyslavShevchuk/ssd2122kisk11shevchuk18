@@ -1,7 +1,6 @@
 using System;
 using System.IO;
-//INI
-using IniParser;
+using IniParser; // INI
 
 namespace SoftwareSystemDesignApp
 {
@@ -26,10 +25,10 @@ namespace SoftwareSystemDesignApp
                         data = ReadFromINI(filePath);
                         break;
                     case ".json":
-                        data = ReadFromJSONOrXML(filePath);
+                        data = ReadFromJSON(filePath);
                         break;
                     case ".xml":
-                        data = ReadFromJSONOrXML(filePath);
+                        data = ReadFromXML(filePath);
                         break;
                     default:
                         Console.Clear();
@@ -58,13 +57,23 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// Read sequence from JSON, XML file
+        /// Read sequence from JSON file
         /// </summary>
         /// <param name="pathJSON">Path to JSON file</param>
         /// <returns>Sequence from JSON file</returns>
-        static string ReadFromJSONOrXML(string pathJSON)
+        static string ReadFromJSON(string pathJSON)
         {
             return File.ReadAllText(pathJSON);
+        }
+
+        /// <summary>
+        /// Read sequence from XML file
+        /// </summary>
+        /// <param name="pathJSON">Path to XML file</param>
+        /// <returns>Sequence from XML file</returns>
+        static string ReadFromXML(string pathXML)
+        {
+            return File.ReadAllText(pathXML);
         }
     }
 }
