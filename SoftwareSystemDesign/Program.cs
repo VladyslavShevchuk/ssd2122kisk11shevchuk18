@@ -6,7 +6,7 @@ namespace SoftwareSystemDesignApp
     // Main class (Viewer)
     class Program
     {
-        // Instruction value
+        // Menu options
         private static readonly Dictionary<string, string> OPTIONS = new Dictionary<string, string>()
         {
             {"-sf", "set sequence from file"},
@@ -18,6 +18,7 @@ namespace SoftwareSystemDesignApp
         };
         private static bool isSequenseWasRecieved; // flag for calling sequence execution
         private static bool isNumberWasRecieved; // flag for calling sequence execution
+        private static bool isSequenseShouldBeStoredInFile; // flag for storing current sequnce if file
 
         static void Main(string[] args)
         {
@@ -25,11 +26,7 @@ namespace SoftwareSystemDesignApp
             while (true)
             {
                 // Display command options
-                Console.WriteLine("Please enter one of following command, enter '-h' for help:");
-                foreach(var option in OPTIONS)
-                {
-                    Console.WriteLine($"{option.Key, 3}, {option.Value}");
-                }
+                PrintMenu();
                 string userOption = Console.ReadLine();
                 Console.Clear();
                               
@@ -37,32 +34,43 @@ namespace SoftwareSystemDesignApp
                 switch (userOption)
                 {
                     // Read sequnce from file .ini, .xml, .json extention case
-                    case "-sf":                    
+                    case "-sf":
                         Console.WriteLine("Enter location to file with SF, or enter again '-sf' to exit from this menu option:");
                         while (true)
-                        {
+                        {                            
                             string filePath = Console.ReadLine();
-                            if(filePath == "-sf")
+                            if (filePath == "-sf")
                             {
                                 Console.Clear();
                                 break;
                             }
-                            string dataFromFile = FileReader.ReadDataFromFile(filePath); // C:\torrent\TestData\TestFile.ini
-                            // Verify that entered sequence is correct
-                            if (Calculation.IsSequnceCorrect(dataFromFile))
+                            if (isSequenseShouldBeStoredInFile && !string.IsNullOrEmpty(Calculation.GetSequence()))
                             {
-                                Calculation.SetSequnce(dataFromFile);
-                                isSequenseWasRecieved = true;
-                                Console.Clear();
+                                FileWriter.WriteSequenceToFile(filePath);
                                 break;
                             }
                             else
                             {
-                                Console.Clear();
-                                Console.WriteLine("Entered sequence contains validation error. Please enter new sequnce.");
-                            }
-                        }                  
-                        break;
+                                // C:\torrent\TestData\TestFile.ini
+                                string dataFromFile = FileReader.ReadDataFromFile(filePath);
+                                if (string.IsNullOrEmpty(dataFromFile))
+                                {
+                                    Console.WriteLine(dataFromFile); // Visualize sequence to user
+                                }
+
+                                if (Calculation.IsSequnceCorrect(dataFromFile))
+                                {
+                                    Calculation.SetSequnce(dataFromFile);
+                                    isSequenseWasRecieved = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Entered sequence contains validation error. Please enter new file path or '-sf' to to exit from this menu option.");
+                                }
+                            }                          
+                        }
+                            break;
                     // Read sequence from console case
                     case "-s":
                         Console.WriteLine("Enter sequnce, or enter again '-s' to exit from this menu option:");
@@ -79,6 +87,7 @@ namespace SoftwareSystemDesignApp
                             {
                                 Calculation.SetSequnce(sequenceValue);
                                 isSequenseWasRecieved = true;
+                                isSequenseShouldBeStoredInFile = true;
                                 Console.Clear();
                                 break;
                             }
@@ -131,14 +140,29 @@ namespace SoftwareSystemDesignApp
                         break;
                 }
 
-                // Execute sequence 
+                // Execute sequence calculation
                 if (isSequenseWasRecieved && isNumberWasRecieved)
                 {
                     CalculateAndSaveResults();
                     isNumberWasRecieved = false;
                     isSequenseWasRecieved = false;
+                    isSequenseShouldBeStoredInFile = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Method-helper for printing menu options
+        /// </summary>
+        private static void PrintMenu()
+        {
+            Console.WriteLine("===========================================================");
+            Console.WriteLine("Please enter one of following command, enter '-h' for help:");
+            foreach (var option in OPTIONS)
+            {
+                Console.WriteLine($"{option.Key,3}, {option.Value}");
+            }
+            Console.WriteLine("===========================================================");
         }
 
         /// <summary>

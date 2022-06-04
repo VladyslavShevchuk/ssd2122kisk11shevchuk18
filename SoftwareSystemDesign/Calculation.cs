@@ -11,7 +11,7 @@ namespace SoftwareSystemDesignApp
     // Perform all calculations with taken data
     public static class Calculation
     {    
-        private static readonly string VERSION_NUMBER = "1.0.1."; // Current program version
+        private static readonly string VERSION_NUMBER = "1.1.1."; // Current program version
         private static string Sequence; // Data with sequence at string format
         private static int NumberOfSequence; // Number of sequnce element which will be calculated
         private static List<double> SequenceResult = new List<double>(); // Results of calculations which will be stored at .csv file
@@ -94,7 +94,7 @@ namespace SoftwareSystemDesignApp
 
                 availableIterations.Aggregate(0.0, (acc, value) => {
                     string formattedSequence = Sequence.Replace("n", value.ToString());
-                    double ans = acc+= Parse(formattedSequence);
+                    double ans = acc += Parse(formattedSequence);
                     SequenceResult.Add(ans);
                     return ans;
                 });
@@ -127,6 +127,10 @@ namespace SoftwareSystemDesignApp
         /// <returns>True if sequnce pattern correct, false otherwise</returns>
         public static bool IsSequnceCorrect(string sequence)
         {
+            if (string.IsNullOrEmpty(sequence))
+            {
+                return false;
+            }
             string sequncePattern = @"\+|-|\*|/|\)|\(|[0-9]|n";
             Regex regex = new Regex(sequncePattern);          
             try

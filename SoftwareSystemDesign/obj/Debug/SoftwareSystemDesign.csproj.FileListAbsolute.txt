@@ -35,3 +35,5 @@ C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSys
 C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSystemDesignSubject\ssd2223kisk11shevchuk18\SoftwareSystemDesign\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSystemDesignSubject\ssd2223kisk11shevchuk18\SoftwareSystemDesign\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSystemDesignSubject\ssd2223kisk11shevchuk18\SoftwareSystemDesign\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSystemDesignSubject\ssd2223kisk11shevchuk18\SoftwareSystemDesign\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\Владислав\OneDrive\Робочий стіл\Polyteh\SoftwareSystemDesignSubject\ssd2223kisk11shevchuk18\SoftwareSystemDesign\bin\Debug\DocumentFormat.OpenXml.xml
