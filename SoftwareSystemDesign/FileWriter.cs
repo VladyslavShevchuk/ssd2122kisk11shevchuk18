@@ -24,8 +24,7 @@ namespace SoftwareSystemDesignApp
         {
             StringBuilder csv = new StringBuilder();
             string fileName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            //string filePath = $"..\\..\\{fileName}.csv";
-            string filePath = "C:\\torrent\\TestData\\TemporaryFileTest.csv"; 
+            string filePath = $"..\\..\\{fileName}.csv";  // Create unique path at any iteration of running
 
             using (FileStream fs = File.Create(filePath))
             foreach (var member in membersOfSequnce)
@@ -72,7 +71,7 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// File for creating .json file with sequence
+        /// Method for creating .json file with sequence
         /// </summary>
         /// <param name="filePath">Path to file</param>
         /// <param name="sequence">Sequence with will be stored</param>
@@ -88,7 +87,7 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// File for creating .xml file with sequence
+        /// Method for creating .xml file with sequence
         /// </summary>
         /// <param name="filePath">Path to file</param>
         /// <param name="sequence">Sequence with will be stored</param>
@@ -102,7 +101,7 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// File for creating .ini file with sequence
+        /// Method for creating .ini file with sequence
         /// </summary>
         /// <param name="filePath">Path to file</param>
         /// <param name="sequence">Sequence with will be stored</param>

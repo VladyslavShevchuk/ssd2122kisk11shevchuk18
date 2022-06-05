@@ -39,35 +39,37 @@ namespace SoftwareSystemDesignApp
                         while (true)
                         {                            
                             string filePath = Console.ReadLine();
+                            // Exit from '-sf' menu
                             if (filePath == "-sf")
                             {
                                 Console.Clear();
                                 break;
                             }
+                            // Create/rewrite file with validated sequence from '-s'
                             if (isSequenseShouldBeStoredInFile && !string.IsNullOrEmpty(Calculation.GetSequence()))
                             {
                                 FileWriter.WriteSequenceToFile(filePath);
                                 break;
                             }
+                            // Get data from file with entered extencion
                             else
                             {
-                                // C:\torrent\TestData\TestFile.ini
                                 string dataFromFile = FileReader.ReadDataFromFile(filePath);
-                                if (string.IsNullOrEmpty(dataFromFile))
+                                // Verify that entered sequence is correct
+                                if (!string.IsNullOrEmpty(dataFromFile))
                                 {
-                                    Console.WriteLine(dataFromFile); // Visualize sequence to user
-                                }
-
-                                if (Calculation.IsSequnceCorrect(dataFromFile))
-                                {
-                                    Calculation.SetSequnce(dataFromFile);
-                                    isSequenseWasRecieved = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Entered sequence contains validation error. Please enter new file path or '-sf' to to exit from this menu option.");
-                                }
+                                    if (Calculation.IsSequnceCorrect(dataFromFile))
+                                    {
+                                        Console.WriteLine(dataFromFile); // Visualize sequence to user
+                                        Calculation.SetSequnce(dataFromFile);
+                                        isSequenseWasRecieved = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Entered sequence contains validation error. Please enter new file path or '-sf' to to exit from this menu option.");
+                                    }
+                                }                              
                             }                          
                         }
                             break;
@@ -75,8 +77,9 @@ namespace SoftwareSystemDesignApp
                     case "-s":
                         Console.WriteLine("Enter sequnce, or enter again '-s' to exit from this menu option:");
                         while (true)
-                        {
+                        {                           
                             string sequenceValue = Console.ReadLine();
+                            // Exit from '-s' menu
                             if (sequenceValue == "-s")
                             {
                                 Console.Clear();
@@ -102,8 +105,9 @@ namespace SoftwareSystemDesignApp
                     case "-n":
                         Console.WriteLine("Enter number of sequnce elements, or enter again '-n' to exit from this menu option:");
                         while (true)
-                        {                           
+                        {             
                             string numberOfSequence = Console.ReadLine();
+                            // Exit from '-n' menu
                             if (numberOfSequence == "-n")
                             {
                                 Console.Clear();

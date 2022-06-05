@@ -24,7 +24,8 @@ namespace SoftwareSystemDesignApp
         static public string ReadDataFromFile(string filePath)
         {
             string extension = Path.GetExtension(filePath);
-            string data = "";
+            string data = null;
+            // Handle errors of file reading
             try
             {           
                 // Choose file reader implementation by file extension
@@ -41,22 +42,22 @@ namespace SoftwareSystemDesignApp
                         break;
                     default:
                         Console.Clear();
-                        if (data == null)
-                        {
-                            Console.WriteLine("Section with sequence wasn't founded in this file.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unknown file extencion. Please reenter file path or enter '-sf' command again to exit from this menu.");
-                        }                      
+                        Console.WriteLine("Unknown file extencion. Please reenter file path or enter '-sf' command again to exit from this menu.");                   
                         break;
-                }                
+                }
+                // Notify user that data in entered file wasn't found
+                if (data == "")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Section with sequence wasn't founded in this file. Please reenter file path.");
+                }
                 return data;
             }
+            // Notify user about error when file reading
             catch
             {
                 Console.Clear();
-                Console.WriteLine("File not found. Please reenter file path.");
+                Console.WriteLine("Error of reading data from file. Probably file not found. Please reenter file path.");
                 return null;
             }
         }
@@ -84,7 +85,7 @@ namespace SoftwareSystemDesignApp
                     }
                 }                           
             }
-            return null; // return error if not find data at file format adress
+            return ""; // return error if not find data at file format adress
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace SoftwareSystemDesignApp
                 JObject json = (JObject)JToken.ReadFrom(reader);
                 return json[FILES_TAGS_NAME].Value<string>();
             }
-            return null; // return error if not find data at file by format adress
+            return ""; // return error if not find data at file by format adress
         }
 
         /// <summary>
@@ -120,8 +121,8 @@ namespace SoftwareSystemDesignApp
                 {
                     return sequence.FirstNode.Parent.Value;
                 }            
-            }          
-            return null; // return error if not find data at file format adress
+            }
+            return ""; // return error if not find data at file format adress
         }
     }
 }
