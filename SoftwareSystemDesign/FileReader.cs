@@ -67,7 +67,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         /// <param name="pathINI">Path to INI file</param>
         /// <returns>Sequence from INI file</returns>
-        static string ReadFromINI(string pathINI)
+        static public string ReadFromINI(string pathINI)
         {
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(pathINI);
@@ -93,16 +93,22 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         /// <param name="pathJSON">Path to JSON file</param>
         /// <returns>Sequence from JSON file</returns>
-        static string ReadFromJSON(string pathJSON)
+        static public string ReadFromJSON(string pathJSON)
         {
             // Read JSON directly from a file
-            using (StreamReader file = File.OpenText(pathJSON))
-            using (JsonTextReader reader = new JsonTextReader(file))
+            try
             {
-                JObject json = (JObject)JToken.ReadFrom(reader);
-                return json[FILES_TAGS_NAME].Value<string>();
+                using (StreamReader file = File.OpenText(pathJSON))
+                using (JsonTextReader reader = new JsonTextReader(file))
+                {
+                    JObject json = (JObject)JToken.ReadFrom(reader);
+                    return json[FILES_TAGS_NAME].Value<string>();
+                }
             }
-            return ""; // return error if not find data at file by format adress
+            catch
+            {
+                return ""; // return error if not find data at file by format adress
+            }     
         }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         /// <param name="pathXML">Path to XML file</param>
         /// <returns>Sequence from XML file</returns>
-        static string ReadFromXML(string pathXML)
+        static public string ReadFromXML(string pathXML)
         {
             XElement xelement = XElement.Load(pathXML);
             IEnumerable<XElement> sequenceData = xelement.Elements();

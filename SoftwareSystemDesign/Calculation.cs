@@ -11,7 +11,7 @@ namespace SoftwareSystemDesignApp
     // Perform all calculations with taken data
     public static class Calculation
     {    
-        private static readonly string VERSION_NUMBER = "1.1.1."; // Current program version
+        private static readonly string VERSION_NUMBER = "1.1.2."; // Current program version
         private static string Sequence; // Data with sequence at string format
         private static int NumberOfSequence; // Number of sequnce element which will be calculated
         private static List<double> SequenceResult = new List<double>(); // Results of calculations which will be stored at .csv file
@@ -154,7 +154,8 @@ namespace SoftwareSystemDesignApp
         public static bool IsNumberCorrect(string readedNumber)
         {
             int.TryParse(readedNumber, out int number); // Verify that number is integer
-            return number > 0 ? true : false; // Verify that number at least '1'
+            bool result = number > 0 ? true : false; // Verify that number at least '1'
+            return result;
         }
 
         /// <summary>
@@ -178,17 +179,28 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// Print sequence results to console for user
+        /// Get sequence results as string to print for user
         /// </summary>
-        public static string GetSequnceResults()
+        public static string GetSequnceResults(List<double> sequenceResult)
         {
             StringBuilder sequenceResultForPrint = new StringBuilder();
-            foreach (var number in SequenceResult)
+            foreach (var number in sequenceResult)
             {
-                sequenceResultForPrint.Append($"{number}; ");
+                sequenceResultForPrint.Append($"{string.Format("{0:0.00}", number)}; "); //String.Format("{0:0.00}", 123.4567);
             }
-            sequenceResultForPrint = sequenceResultForPrint.Remove(sequenceResultForPrint.Length-2, 2); // Remove last dot-coma symbol
+            if(sequenceResultForPrint.Length > 2)
+            {
+                sequenceResultForPrint = sequenceResultForPrint.Remove(sequenceResultForPrint.Length - 2, 2); // Remove last dot-coma symbol
+            }           
             return sequenceResultForPrint.ToString();
+        }
+
+        /// <summary>
+        /// Print sequence results to console for user
+        /// </summary>
+        public static void PrintSequnceResults()
+        {
+            Console.WriteLine(GetSequnceResults(SequenceResult));
         }
     }
 }

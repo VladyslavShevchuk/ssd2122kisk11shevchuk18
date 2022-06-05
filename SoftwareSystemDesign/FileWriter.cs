@@ -105,7 +105,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         /// <param name="filePath">Path to file</param>
         /// <param name="sequence">Sequence with will be stored</param>
-        private static void  WriteToINI(string filePath, string sequence)
+        private static void WriteToINI(string filePath, string sequence)
         {
             FileIniDataParser parser = new FileIniDataParser();
             IniData data = new IniData();

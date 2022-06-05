@@ -175,7 +175,7 @@ namespace SoftwareSystemDesignApp
         private static void CalculateAndSaveResults()
         {
             Calculation.CalculateSequnceElements();
-            Console.WriteLine(Calculation.GetSequnceResults());
+            Calculation.PrintSequnceResults();
             Calculation.SendSequnceResultToWriter();
         }
     }

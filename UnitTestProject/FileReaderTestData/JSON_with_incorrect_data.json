@@ -1,0 +1,20 @@
+{
+  "Geeks": [
+    {
+      "firstName": "Vivek",
+      "lastName": "Kothari"
+    },
+    {
+      "firstName": "Suraj",
+      "lastName": "Kumar"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Smith"
+    },
+    {
+      "firstName": "Peter",
+      "lastName": "Gregory"
+    }
+  ]
+}
