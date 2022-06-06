@@ -11,7 +11,7 @@ namespace SoftwareSystemDesignApp
     // Perform all calculations with taken data
     public static class Calculation
     {    
-        private static readonly string VERSION_NUMBER = "1.1.2."; // Current program version
+        private static readonly string VERSION_NUMBER = "2.0.0."; // Current program version
         private static string Sequence; // Data with sequence at string format
         private static int NumberOfSequence; // Number of sequnce element which will be calculated
         private static List<double> SequenceResult = new List<double>(); // Results of calculations which will be stored at .csv file
