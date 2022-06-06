@@ -24,7 +24,7 @@ namespace SoftwareSystemDesignApp
         {
             StringBuilder csv = new StringBuilder();
             string fileName = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
-            string filePath = $"..\\..\\{fileName}.csv";  // Create unique path at any iteration of running
+            string filePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\{fileName}.csv";  // Create unique path at any iteration of running
 
             using (FileStream fs = File.Create(filePath))
             foreach (var member in membersOfSequnce)
