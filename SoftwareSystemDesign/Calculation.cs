@@ -59,7 +59,15 @@ namespace SoftwareSystemDesignApp
         public static void CallUserHelpInfo()
         {
             string userHelpInfoPath = "..\\..\\UserHelpInfo.txt";
-            Process.Start(userHelpInfoPath);          
+            string additionalHelpInfoPath = "UserHelpInfo.txt";
+            try
+            {
+                Process.Start(userHelpInfoPath);
+            }
+            catch
+            {
+                Process.Start(additionalHelpInfoPath);
+            }
         }
 
         /// <summary>
