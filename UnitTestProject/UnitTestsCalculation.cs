@@ -7,7 +7,7 @@ namespace UnitTestProject
     [TestClass]
     public class UnitTestsCalculation
     {
-        private const string VERSION_NUMBER = "Version number: 1.1.2.";
+        private const string VERSION_NUMBER = "Version number: 2.0.0.";
         private readonly List<double> EMPTY_SEQUENCE_DATA = new List<double>();
         private readonly List<double> CORRECT_SEQUENCE_DATA = new List<double> { -1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9, 10.10 };
         private const string SEQUENCE_DATA_TO_DISPLAY = "-1,10; 2,20; 3,30; 4,40; 5,50; 6,60; 7,70; 8,80; 9,90; 10,10";
