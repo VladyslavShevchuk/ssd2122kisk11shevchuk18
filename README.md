@@ -27,24 +27,27 @@ If you want to use files created by yourself, all those files should have next s
 Sequence variable should be inside 'DataModel' block. If .ini file contains another data, it will be ignored.
 
 Example:
-
+```ini
 [DataModel]
 Sequence = (n*2+2/n*(1+5))/2
+```
 
 .Json:
 
 Sequence variable should be inside curve brackets, as at default json format.
 
 Example:
+```json
 {"Sequence":"(n*2+2/n*(1+5))/2"}
-
+```
 .xml:
 
 Sequence variable should be inside 'DataModel' tag. If .xml file contains another data, it will be ignored.
 
 Example:
-
+```xml
 <?xml version="1.0"?>
 <DataModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Sequence>(n*2+2/n*(1+5))/2</Sequence>
 </DataModel>
+```
