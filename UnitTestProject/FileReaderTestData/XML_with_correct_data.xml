@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<DataModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Sequence>(n*2+2/n*(1+5))/2</Sequence>
+</DataModel>
