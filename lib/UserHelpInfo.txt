@@ -1,0 +1,30 @@
+*User manual to understand how the program works*
+
+===============================================
+
+This program supports three types of files:
+- .json; 
+- .ini; 
+- .xml.
+
+===============================================
+
+Command Description:
+-sf - set sequence from file;
+-s - set sequence from console;
+-n - number of elements that will be generated;
+-h - open user manual;
+-v - get software version;
+-lv - exit from program.
+
+===============================================
+
+Overwrite or create the file with the manual sequence:
+1. Use the -s command to enter a new sequence(the file will be overwritten only if you specify the correct sequence - one that will be validated);
+2. Then, using the -sf command, specify the file you want to rewrite (three types of extensions are supported: .json, .ini, .xml);
+3. Your file has been overwritten, or if such a file did not exist, it will be created.
+
+===============================================
+
+The result is saved in CSV format in the folder with the .exe application.
+The name has the following structure: yyyy-MM-dd HH-mm-ss.
