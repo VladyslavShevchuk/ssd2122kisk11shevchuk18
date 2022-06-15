@@ -1,0 +1,2 @@
+cd lib
+START SoftwareSystem
