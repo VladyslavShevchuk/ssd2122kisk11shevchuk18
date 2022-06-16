@@ -54,25 +54,48 @@ namespace SoftwareSystemDesignApp
                             // Get data from file with entered extencion
                             else
                             {
-                                string dataFromFile = FileReader.ReadDataFromFile(filePath);
+                                // Read sequence from file
+                                string dataFromFile = FileReader.ReadDataFromFile(filePath, true);
                                 // Verify that entered sequence is correct
                                 if (!string.IsNullOrEmpty(dataFromFile))
                                 {
                                     if (Calculation.IsSequnceCorrect(dataFromFile))
-                                    {
-                                        Console.WriteLine(dataFromFile); // Visualize sequence to user
+                                    {                                      
                                         Calculation.SetSequnce(dataFromFile);
                                         isSequenseWasRecieved = true;
-                                        break;
                                     }
                                     else
                                     {
                                         Console.WriteLine("Entered sequence contains validation error. Please enter new file path or '-sf' to to exit from this menu option.");
                                     }
-                                }                              
+                                }
+                                // Read number from file
+                                string numberFromFile = FileReader.ReadDataFromFile(filePath, false);
+                                // Verify that entered sequence is correct
+                                if (!string.IsNullOrEmpty(numberFromFile))
+                                {
+                                    if (Calculation.IsNumberCorrect(numberFromFile))
+                                    {
+                                        
+                                        Calculation.SetNumberOfSequnceElements(int.Parse(numberFromFile));
+                                        isNumberWasRecieved = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Wrong format of number. Please enter only positive integer type (max - 2147483647).");
+                                    }
+                                }
+                                // Break from case if any of data was recieved
+                                if(isSequenseWasRecieved || isNumberWasRecieved)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine($"Entered sequence: {dataFromFile}"); // Visualize sequence to user
+                                    Console.WriteLine($"Entered number: {numberFromFile}"); // Visualize number to user
+                                    break;
+                                }
                             }                          
                         }
-                            break;
+                        break;
                     // Read sequence from console case
                     case "-s":
                         Console.WriteLine("Enter sequnce, or enter again '-s' to exit from this menu option:");
