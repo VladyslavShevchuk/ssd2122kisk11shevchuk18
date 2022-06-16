@@ -1,5 +1,4 @@
 ﻿using SoftwareSystemDesignApp;
-using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestProject
@@ -10,25 +9,26 @@ namespace UnitTestProject
         private const string PATH_TO_FILE_WITH_PROHIBITED_EXTENTION = "../../FileReaderTestData/FILE_WITH_PROHIBITED_EXTENTION.txt";
         private const string PATH_TO_FILE_PATTERN = "../../FileReaderTestData/";
         private const string EXPECTED_DATA_FROM_FILES = "(n*2+2/n*(1+5))/2";
+        private const string TAG_SEQUENCE = "Sequence";
 
         // Verify reading data from prohibited file extencion
         [TestMethod]
         public void TryToReadDataFromFileWithProhibitedExtentionINI()
         {
-            Assert.AreEqual("", FileReader.ReadFromINI(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION));
+            Assert.AreEqual("", FileReader.ReadFromINI(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION, TAG_SEQUENCE));
         }
 
         [TestMethod]
         [ExpectedException(typeof(System.Xml.XmlException))]
         public void TryToReadDataFromFileWithProhibitedExtentionXML()
         {
-            FileReader.ReadFromXML(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION);
+            FileReader.ReadFromXML(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION, TAG_SEQUENCE);
         }
 
         [TestMethod]
         public void TryToReadDataFromFileWithProhibitedExtentionJSON()
         {
-            Assert.AreEqual("", FileReader.ReadFromJSON(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION));
+            Assert.AreEqual("", FileReader.ReadFromJSON(PATH_TO_FILE_WITH_PROHIBITED_EXTENTION, TAG_SEQUENCE));
         }
 
         // Verify reading wrong data
@@ -36,7 +36,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "INI_with_incorrect_data.ini", DisplayName = "Read incorrect data from INI")]
         public void ReadDataFromFileWithIncorrectDataINI(string filePath)
         {
-            string data = FileReader.ReadFromINI(filePath);
+            string data = FileReader.ReadFromINI(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, "");
         }
 
@@ -44,7 +44,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "XML_with_incorrect_data.xml", DisplayName = "Read incorrect data from XML")]
         public void ReadDataFromFileWithIncorrectDataXML(string filePath)
         {
-            string data = FileReader.ReadFromXML(filePath);
+            string data = FileReader.ReadFromXML(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, "");
         }
 
@@ -52,7 +52,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "JSON_with_incorrect_data.json", DisplayName = "Read incorrect data from JSON")]
         public void ReadDataFromFileWithIncorrectDataJSON(string filePath)
         {
-            string data = FileReader.ReadFromJSON(filePath);
+            string data = FileReader.ReadFromJSON(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, "");
         }
 
@@ -61,7 +61,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "INI_with_correct_data.ini", DisplayName = "Read correct data from INI")]
         public void ReadDataFromFileWithCorrectDataINI(string filePath)
         {
-            string data = FileReader.ReadFromINI(filePath);
+            string data = FileReader.ReadFromINI(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, EXPECTED_DATA_FROM_FILES);
         }
 
@@ -69,7 +69,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "XML_with_correct_data.xml", DisplayName = "Read correct data from XML")]
         public void ReadDataFromFileWithCorrectDataXML(string filePath)
         {
-            string data = FileReader.ReadFromXML(filePath);
+            string data = FileReader.ReadFromXML(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, EXPECTED_DATA_FROM_FILES);
         }
 
@@ -77,7 +77,7 @@ namespace UnitTestProject
         [DataRow(PATH_TO_FILE_PATTERN + "JSON_with_correct_data.json", DisplayName = "Read correct data from JSON")]
         public void ReadDataFromFileWithCorrectDataJSON(string filePath)
         {
-            string data = FileReader.ReadFromJSON(filePath);
+            string data = FileReader.ReadFromJSON(filePath, TAG_SEQUENCE);
             Assert.AreEqual(data, EXPECTED_DATA_FROM_FILES);
         }
     }

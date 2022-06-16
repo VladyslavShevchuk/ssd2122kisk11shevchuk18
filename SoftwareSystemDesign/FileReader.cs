@@ -15,14 +15,17 @@ namespace SoftwareSystemDesignApp
         // Variables for files internal data path
         private const string FILES_SECTION_NAME = "DataModel";
         private const string FILES_TAGS_NAME = "Sequence";
+        private const string FILES_TAGS_NUMBER = "Number";
 
         /// <summary>
         /// Choose implementation of file read method by it extension
         /// </summary>
         /// <param name="filePath">Path to file which shoul be readed</param>
+        /// /// <param name="isSequence">Choose search criteria</param>
         /// <returns>Data from sequence file</returns>
-        static public string ReadDataFromFile(string filePath)
+        static public string ReadDataFromFile(string filePath, bool isSequence)
         {
+            string tagNameSearch = isSequence ? FILES_TAGS_NAME : FILES_TAGS_NUMBER;
             string extension = Path.GetExtension(filePath);
             string data = null;
             // Handle errors of file reading
@@ -32,13 +35,13 @@ namespace SoftwareSystemDesignApp
                 switch (extension)
                 {
                     case ".ini":
-                        data = ReadFromINI(filePath);
+                        data = ReadFromINI(filePath, tagNameSearch);
                         break;
                     case ".json":
-                        data = ReadFromJSON(filePath);
+                        data = ReadFromJSON(filePath, tagNameSearch);
                         break;
                     case ".xml":
-                        data = ReadFromXML(filePath);
+                        data = ReadFromXML(filePath, tagNameSearch);
                         break;
                     default:
                         Console.Clear();
@@ -48,8 +51,7 @@ namespace SoftwareSystemDesignApp
                 // Notify user that data in entered file wasn't found
                 if (data == "")
                 {
-                    Console.Clear();
-                    Console.WriteLine("Section with sequence wasn't founded in this file. Please reenter file path.");
+                    Console.WriteLine($"Section with '{tagNameSearch}' wasn't founded in this file. Please reenter file path.");
                 }
                 return data;
             }
@@ -63,11 +65,12 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// Read sequence from INI file
+        /// Read data from INI file
         /// </summary>
         /// <param name="pathINI">Path to INI file</param>
-        /// <returns>Sequence from INI file</returns>
-        static public string ReadFromINI(string pathINI)
+        /// <param name="searchTagCriteria">Tag with data</param>
+        /// <returns>Data from INI file</returns>
+        static public string ReadFromINI(string pathINI, string searchTagCriteria)
         {
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(pathINI);
@@ -78,7 +81,7 @@ namespace SoftwareSystemDesignApp
                 {
                     foreach (KeyData key in section.Keys)
                     {
-                        if (key.KeyName == FILES_TAGS_NAME)
+                        if (key.KeyName == searchTagCriteria)
                         {
                             return key.Value.Replace("\"", "");
                         }
@@ -89,11 +92,12 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// Read sequence from JSON file
+        /// Read data from JSON file
         /// </summary>
         /// <param name="pathJSON">Path to JSON file</param>
-        /// <returns>Sequence from JSON file</returns>
-        static public string ReadFromJSON(string pathJSON)
+        /// <param name="searchTagCriteria">Tag with data</param>
+        /// <returns>Data from JSON file</returns>
+        static public string ReadFromJSON(string pathJSON, string searchTagCriteria)
         {
             // Read JSON directly from a file
             try
@@ -102,7 +106,7 @@ namespace SoftwareSystemDesignApp
                 using (JsonTextReader reader = new JsonTextReader(file))
                 {
                     JObject json = (JObject)JToken.ReadFrom(reader);
-                    return json[FILES_TAGS_NAME].Value<string>();
+                    return json[searchTagCriteria].Value<string>();
                 }
             }
             catch
@@ -112,18 +116,19 @@ namespace SoftwareSystemDesignApp
         }
 
         /// <summary>
-        /// Read sequence from XML file
+        /// Read data from XML file
         /// </summary>
         /// <param name="pathXML">Path to XML file</param>
-        /// <returns>Sequence from XML file</returns>
-        static public string ReadFromXML(string pathXML)
+        /// <param name="searchTagCriteria">Tag with data</param>
+        /// <returns>Data from XML file</returns>
+        static public string ReadFromXML(string pathXML, string searchTagCriteria)
         {
             XElement xelement = XElement.Load(pathXML);
             IEnumerable<XElement> sequenceData = xelement.Elements();
             // Iterate through all the sections
             foreach (var sequence in sequenceData)
             {
-                if (sequence.Name.LocalName == FILES_TAGS_NAME)
+                if (sequence.Name.LocalName == searchTagCriteria)
                 {
                     return sequence.FirstNode.Parent.Value;
                 }            
