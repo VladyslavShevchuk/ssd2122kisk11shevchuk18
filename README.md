@@ -3,6 +3,15 @@ Work for subject “Software systems design”
 This is repository for completing labs for subject "Software systems design"
 Student's number - 18
 
+To run current project you need:
+1) Donwload 'Build Tools for Visual Studio' from site: https://visualstudio.microsoft.com/downloads/
+3) Download 'Download .NET SDK x64' from https://dotnet.microsoft.com/en-us/download
+4) Download NuGet.exe from https://www.nuget.org/downloads
+5) Install PS from previous steps: Build Tools for Visual Studio - install befault packages plus .NET Framework 4.8 SDK and .NET Framework 4.8 targeting pack
+6) Add nuget.exe to the folder with MSBuild.exe 
+7) Add global enviromental variable path to folder from step 5
+8) Run .bat file from 'ci' folder in next order: BuildProject.bat -> Start.bat
+
 For current project you need to install next packages:
 
 Install-Package ini-parser
