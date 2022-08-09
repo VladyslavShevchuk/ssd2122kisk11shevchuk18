@@ -12,6 +12,8 @@ namespace SoftwareSystemDesignApp
     // Class for reading data from files with .ini, .xml and .json extensions
     public static class FileReader
     {
+        // Logger instance
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         // Variables for files internal data path
         private const string FILES_SECTION_NAME = "DataModel";
         private const string FILES_TAGS_NAME = "Sequence";
@@ -25,6 +27,7 @@ namespace SoftwareSystemDesignApp
         /// <returns>Data from sequence file</returns>
         static public string ReadDataFromFile(string filePath, bool isSequence)
         {
+            log.Debug("ReadDataFromFile method was called.");
             string tagNameSearch = isSequence ? FILES_TAGS_NAME : FILES_TAGS_NUMBER;
             string extension = Path.GetExtension(filePath);
             string data = null;
@@ -45,20 +48,23 @@ namespace SoftwareSystemDesignApp
                         break;
                     default:
                         Console.Clear();
+                        log.Warn($"Entered file extention [${extension}] is not supported.");
                         Console.WriteLine("Unknown file extencion. Please reenter file path or enter '-sf' command again to exit from this menu.");                   
                         break;
                 }
                 // Notify user that data in entered file wasn't found
                 if (data == "")
                 {
+                    log.Error($"Expected data wasn't founded in file {filePath}");
                     Console.WriteLine($"Section with '{tagNameSearch}' wasn't founded in this file. Please reenter file path.");
                 }
                 return data;
             }
             // Notify user about error when file reading
-            catch
+            catch(Exception exception)
             {
                 Console.Clear();
+                log.Error($"Error of reading data from file {filePath}", exception);
                 Console.WriteLine("Error of reading data from file. Probably file not found. Please reenter file path.");
                 return null;
             }
@@ -72,6 +78,7 @@ namespace SoftwareSystemDesignApp
         /// <returns>Data from INI file</returns>
         static public string ReadFromINI(string pathINI, string searchTagCriteria)
         {
+            log.Debug("ReadFromINI method was called");
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(pathINI);
             // Iterate through all the sections
@@ -88,6 +95,7 @@ namespace SoftwareSystemDesignApp
                     }
                 }                           
             }
+            log.Warn("Expected data wasn't founded in file.");
             return ""; // return error if not find data at file format adress
         }
 
@@ -99,6 +107,7 @@ namespace SoftwareSystemDesignApp
         /// <returns>Data from JSON file</returns>
         static public string ReadFromJSON(string pathJSON, string searchTagCriteria)
         {
+            log.Debug("ReadFromJSON method was called");
             // Read JSON directly from a file
             try
             {
@@ -111,6 +120,7 @@ namespace SoftwareSystemDesignApp
             }
             catch
             {
+                log.Warn("Expected data wasn't founded in file.");
                 return ""; // return error if not find data at file by format adress
             }     
         }
@@ -123,6 +133,7 @@ namespace SoftwareSystemDesignApp
         /// <returns>Data from XML file</returns>
         static public string ReadFromXML(string pathXML, string searchTagCriteria)
         {
+            log.Debug("ReadFromXML method was called");
             XElement xelement = XElement.Load(pathXML);
             IEnumerable<XElement> sequenceData = xelement.Elements();
             // Iterate through all the sections
@@ -133,6 +144,7 @@ namespace SoftwareSystemDesignApp
                     return sequence.FirstNode.Parent.Value;
                 }            
             }
+            log.Warn("Expected data wasn't founded in file.");
             return ""; // return error if not find data at file format adress
         }
     }

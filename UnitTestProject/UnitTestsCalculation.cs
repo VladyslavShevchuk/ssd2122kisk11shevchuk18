@@ -39,13 +39,13 @@ namespace UnitTestProject
         [TestMethod]
         public void VerifyGetSequnceResultsEmpty()
         {
-            Assert.AreEqual("", Calculation.GetSequnceResults(EMPTY_SEQUENCE_DATA));
+            Assert.AreEqual("", Calculation.GetSequenceResults(EMPTY_SEQUENCE_DATA));
         }
 
         [TestMethod]
         public void VerifyGetSequnceResults()
         {
-            Assert.AreEqual(SEQUENCE_DATA_TO_DISPLAY, Calculation.GetSequnceResults(CORRECT_SEQUENCE_DATA));
+            Assert.AreEqual(SEQUENCE_DATA_TO_DISPLAY, Calculation.GetSequenceResults(CORRECT_SEQUENCE_DATA));
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace UnitTestProject
         [DataRow("", false, DisplayName = "Empty sequence")]      
         public void VerifyIsSequnceCorrect(string sequence, bool expectedResult)
         {
-            Assert.AreEqual(expectedResult, Calculation.IsSequnceCorrect(sequence), "Method returns wrong result.");
+            Assert.AreEqual(expectedResult, Calculation.IsSequenceCorrect(sequence), "Method returns wrong result.");
         }
     }
 }

@@ -6,6 +6,8 @@ namespace SoftwareSystemDesignApp
     // Main class (Viewer)
     class Program
     {
+        // Logger instance
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType); 
         // Menu options
         private static readonly Dictionary<string, string> OPTIONS = new Dictionary<string, string>()
         {
@@ -18,13 +20,14 @@ namespace SoftwareSystemDesignApp
         };
         private static bool isSequenseWasRecieved; // flag for calling sequence execution
         private static bool isNumberWasRecieved; // flag for calling sequence execution
-        private static bool isSequenseShouldBeStoredInFile; // flag for storing current sequnce if file
+        private static bool isSequenseShouldBeStoredInFile; // flag for storing current sequence if file
 
         static void Main(string[] args)
         {
+            log.Info("Program started.");
             // Infinite loop - console menu
             while (true)
-            {
+            {             
                 // Display command options
                 PrintMenu();
                 string userOption = Console.ReadLine();
@@ -35,6 +38,7 @@ namespace SoftwareSystemDesignApp
                 {
                     // Read sequnce from file .ini, .xml, .json extention case
                     case "-sf":
+                        log.Debug("-sf section was called.");
                         Console.WriteLine("Enter location to file with SF, or enter again '-sf' to exit from this menu option:");
                         while (true)
                         {                            
@@ -43,6 +47,7 @@ namespace SoftwareSystemDesignApp
                             if (filePath == "-sf")
                             {
                                 Console.Clear();
+                                log.Debug("Exit from -sf section.");
                                 break;
                             }
                             // Create/rewrite file with validated sequence from '-s'
@@ -59,10 +64,11 @@ namespace SoftwareSystemDesignApp
                                 // Verify that entered sequence is correct
                                 if (!string.IsNullOrEmpty(dataFromFile))
                                 {
-                                    if (Calculation.IsSequnceCorrect(dataFromFile))
+                                    if (Calculation.IsSequenceCorrect(dataFromFile))
                                     {                                      
                                         Calculation.SetSequnce(dataFromFile);
                                         isSequenseWasRecieved = true;
+                                        log.Info("The sequence from file is assigned.");
                                     }
                                     else
                                     {
@@ -75,10 +81,10 @@ namespace SoftwareSystemDesignApp
                                 if (!string.IsNullOrEmpty(numberFromFile))
                                 {
                                     if (Calculation.IsNumberCorrect(numberFromFile))
-                                    {
-                                        
+                                    {                   
                                         Calculation.SetNumberOfSequnceElements(int.Parse(numberFromFile));
                                         isNumberWasRecieved = true;
+                                        log.Info("The number of sequence members from file is assigned.");
                                     }
                                     else
                                     {
@@ -98,6 +104,7 @@ namespace SoftwareSystemDesignApp
                         break;
                     // Read sequence from console case
                     case "-s":
+                        log.Debug("-s section was called.");
                         Console.WriteLine("Enter sequnce, or enter again '-s' to exit from this menu option:");
                         while (true)
                         {                           
@@ -106,26 +113,30 @@ namespace SoftwareSystemDesignApp
                             if (sequenceValue == "-s")
                             {
                                 Console.Clear();
+                                log.Debug("Exit from -s section.");
                                 break;
                             }
                             // Verify that entered sequence is correct
-                            if (Calculation.IsSequnceCorrect(sequenceValue))
-                            {
+                            if (Calculation.IsSequenceCorrect(sequenceValue))
+                            {                              
                                 Calculation.SetSequnce(sequenceValue);
                                 isSequenseWasRecieved = true;
                                 isSequenseShouldBeStoredInFile = true;
                                 Console.Clear();
+                                log.Info("The sequence is assigned.");
                                 break;
                             }
                             else
                             {
                                 Console.Clear();
+                                log.Error("Entered sequence contains validation error.");
                                 Console.WriteLine("Entered sequence contains validation error. Please enter new sequnce.");
                             }
                         }
                         break;
                     // Read number of elements from console case
                     case "-n":
+                        log.Debug("-n section was called.");
                         Console.WriteLine("Enter number of sequnce elements, or enter again '-n' to exit from this menu option:");
                         while (true)
                         {             
@@ -134,6 +145,7 @@ namespace SoftwareSystemDesignApp
                             if (numberOfSequence == "-n")
                             {
                                 Console.Clear();
+                                log.Debug("Exit from -n section.");
                                 break;
                             }
                             // Verify that entered number is correct (uint)
@@ -142,25 +154,29 @@ namespace SoftwareSystemDesignApp
                                 Calculation.SetNumberOfSequnceElements(int.Parse(numberOfSequence));
                                 isNumberWasRecieved = true;
                                 Console.Clear();
+                                log.Info("The number of sequence members is assigned.");
                                 break;
                             }
                             else
                             {
                                 Console.Clear();
+                                log.Error("Entered number was at incorrect format.");
                                 Console.WriteLine("Wrong format of number. Please enter only positive integer type (max - 2147483647).");
                             }                          
                         }                      
                         break;
                     // Call user manual case
-                    case "-h":
+                    case "-h":                    
                         Calculation.CallUserHelpInfo();
+                        log.Info("Called user help info.");
                         break;
                     // Call version number case
-                    case "-v":
+                    case "-v":                     
                         Console.WriteLine(Calculation.CallVersionNumber());
+                        log.Info("Called version info.");
                         break;
                     // Exit from program case
-                    case "-lv":
+                    case "-lv":                       
                         Calculation.ExitFromProgram();
                         break;
                     default:
@@ -170,10 +186,11 @@ namespace SoftwareSystemDesignApp
                 // Execute sequence calculation
                 if (isSequenseWasRecieved && isNumberWasRecieved)
                 {
+                    log.Info("Sequence members starts caclulation.");
                     CalculateAndSaveResults();
                     isNumberWasRecieved = false;
                     isSequenseWasRecieved = false;
-                    isSequenseShouldBeStoredInFile = false;
+                    isSequenseShouldBeStoredInFile = false;                
                 }
             }
         }

@@ -10,7 +10,10 @@ namespace SoftwareSystemDesignApp
     // Class-contoller
     // Perform all calculations with taken data
     public static class Calculation
-    {    
+    {
+        // Logger instance
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static readonly string VERSION_NUMBER = "2.0.0."; // Current program version
         private static string Sequence; // Data with sequence at string format
         private static int NumberOfSequence; // Number of sequnce element which will be calculated
@@ -58,6 +61,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         public static void CallUserHelpInfo()
         {
+            log.Debug("User help info was called.");
             string userHelpInfoPath = "..\\..\\UserHelpInfo.txt";
             string additionalHelpInfoPath = "UserHelpInfo.txt";
             try
@@ -75,6 +79,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         public static string CallVersionNumber()
         {
+            log.Debug("Version number method was called.");
             string versionNumber = $"Version number: {VERSION_NUMBER}";
             return versionNumber;
         }
@@ -84,6 +89,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         public static void ExitFromProgram()
         {
+            log.Info("Program shutdown.");
             Environment.Exit(0);
         }
 
@@ -91,7 +97,8 @@ namespace SoftwareSystemDesignApp
         /// Calculate numbers of sequnce
         /// </summary>
         public static void CalculateSequnceElements()
-        {          
+        {
+            log.Debug("CalculateSequenceElements method was called.");
             try
             {
                 int[] availableIterations = new int[NumberOfSequence];
@@ -109,8 +116,9 @@ namespace SoftwareSystemDesignApp
                 NumberOfSequence = 0;
                 Sequence = null;
             }
-            catch
+            catch(Exception exception)
             {
+                log.Error("Error of calculation was occurred.", exception);
                 Console.WriteLine("Error of calculation. Data cleared.");
             }
         }
@@ -133,8 +141,9 @@ namespace SoftwareSystemDesignApp
         /// Check if entered sequnce correct
         /// </summary>
         /// <returns>True if sequnce pattern correct, false otherwise</returns>
-        public static bool IsSequnceCorrect(string sequence)
+        public static bool IsSequenceCorrect(string sequence)
         {
+            log.Debug("IsSequenceCorrect method was called.");
             if (string.IsNullOrEmpty(sequence))
             {
                 return false;
@@ -161,6 +170,7 @@ namespace SoftwareSystemDesignApp
         /// <returns>True if number is correct, false otherwise</returns>
         public static bool IsNumberCorrect(string readedNumber)
         {
+            log.Debug("IsNumberCorrect method was called.");
             int.TryParse(readedNumber, out int number); // Verify that number is integer
             bool result = number > 0 ? true : false; // Verify that number at least '1'
             return result;
@@ -171,12 +181,14 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         public static void SendSequnceResultToWriter()
         {
+            log.Debug("SendSequenceResultToWriter method was called.");
             try
             {
                 FileWriter.WriteDataToCSVFile(SequenceResult);
             }
-            catch
+            catch(Exception exception)
             {
+                log.Error("Error of writing data to file.", exception);
                 Console.WriteLine("Error of writing data to file. Results were cleared.");
             }
             finally
@@ -189,12 +201,13 @@ namespace SoftwareSystemDesignApp
         /// <summary>
         /// Get sequence results as string to print for user
         /// </summary>
-        public static string GetSequnceResults(List<double> sequenceResult)
+        public static string GetSequenceResults(List<double> sequenceResult)
         {
+            log.Debug("GetSequenceResults method was called.");
             StringBuilder sequenceResultForPrint = new StringBuilder();
             foreach (var number in sequenceResult)
             {
-                sequenceResultForPrint.Append($"{string.Format("{0:0.00}", number)}; "); //String.Format("{0:0.00}", 123.4567);
+                sequenceResultForPrint.Append($"{string.Format("{0:0.00}", number)}; "); // String.Format("{0:0.00}", 123.4567);
             }
             if(sequenceResultForPrint.Length > 2)
             {
@@ -208,7 +221,7 @@ namespace SoftwareSystemDesignApp
         /// </summary>
         public static void PrintSequnceResults()
         {
-            Console.WriteLine(GetSequnceResults(SequenceResult));
+            Console.WriteLine(GetSequenceResults(SequenceResult));
         }
     }
 }
