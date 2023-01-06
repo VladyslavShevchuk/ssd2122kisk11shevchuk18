@@ -1,7 +1,11 @@
 # ssd2122kisk11shevchuk18
-Work for subject “Software systems design”
-This is repository for completing labs for subject "Software systems design"
-Student's number - 18
+The developed software reads a file of the appropriate format or, in its absence, takes a formula and generates such a file, parses and generates a sequence, saving it in a .csv file.
+In addition, 5 console commands are implemented, which in turn:
+-sf (specifies the location of the initial file),
+-s (sets sequence formula),
+-n (says how many elements of the sequence should be generated),
+-h (opens a documentation window to help the user),
+-v (returns the software version).
 
 To run current project you need:
 1) Donwload 'Build Tools for Visual Studio' from site: https://visualstudio.microsoft.com/downloads/
