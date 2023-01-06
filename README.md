@@ -27,7 +27,7 @@ System.Xml.Linq
 
 System.Xml.Serializations
 
-For thit you can add references at project by context menu and choose 'Assemblies' filter.
+For this you can add references at project by context menu and choose 'Assemblies' filter.
 All those packages needed for correct work with supported extentions (.ini, .json, .xml).
 
 If you want to use files created by yourself, all those files should have next structure:
