@@ -1,4 +1,4 @@
-# ssd2122kisk11shevchuk18
+# Sequence parser
 The developed software reads a file of the appropriate format or, in its absence, takes a formula and generates such a file, parses and generates a sequence, saving it in a .csv file.
 In addition, 5 console commands are implemented, which in turn:
 -sf (specifies the location of the initial file),
